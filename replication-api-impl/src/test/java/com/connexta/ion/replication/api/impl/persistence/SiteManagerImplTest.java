@@ -23,6 +23,8 @@ import static org.mockito.Mockito.when;
 import com.connexta.ion.replication.api.data.ReplicationSite;
 import com.connexta.ion.replication.api.impl.data.ReplicationSiteImpl;
 import com.connexta.ion.replication.api.impl.spring.SiteRepository;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +34,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SiteManagerImplTest {
+  private static final URL URL;
+
+  static {
+    try {
+      URL = new URL("http://localhost/test");
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 
   private SiteManagerImpl store;
 
@@ -53,9 +64,9 @@ public class SiteManagerImplTest {
 
   @Test
   public void createSite() {
-    ReplicationSite site = store.createSite("name", "url");
+    ReplicationSite site = store.createSite("name", SiteManagerImplTest.URL);
     assertThat(site.getName(), is("name"));
-    assertThat(site.getUrl(), is("url"));
+    assertThat(site.getUrl(), is(SiteManagerImplTest.URL));
   }
 
   @Test(expected = IllegalArgumentException.class)

@@ -14,6 +14,8 @@
 package com.connexta.ion.replication.api.impl.data;
 
 import com.connexta.ion.replication.api.data.ReplicationSite;
+import com.connexta.ion.replication.api.data.SiteType;
+import java.net.URL;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
@@ -29,25 +31,18 @@ public class ReplicationSiteImpl extends AbstractPersistable implements Replicat
    *
    * <ul>
    *   <li>1 - initial version.
-   *   <li>2 - Adds
-   *       <ul>
-   *         <li>is-remote-managed field of type boolean, defaults to false
-   *       </ul>
    * </ul>
    */
-  public static final int CURRENT_VERSION = 2;
-
-  @Indexed(name = "remote_managed")
-  private boolean isRemoteManaged = false;
+  public static final int CURRENT_VERSION = 1;
 
   @Indexed(name = "name")
   private String name;
 
   @Indexed(name = "url")
-  private String url;
+  private URL url;
 
   @Indexed(name = "type")
-  private String type;
+  private SiteType type;
 
   public ReplicationSiteImpl() {
     super.setVersion(CURRENT_VERSION);
@@ -64,32 +59,22 @@ public class ReplicationSiteImpl extends AbstractPersistable implements Replicat
   }
 
   @Override
-  public String getUrl() {
+  public URL getUrl() {
     return url;
   }
 
   @Override
-  public void setUrl(String url) {
+  public void setUrl(URL url) {
     this.url = url;
   }
 
   @Override
-  public void setRemoteManaged(boolean remoteManaged) {
-    this.isRemoteManaged = remoteManaged;
-  }
-
-  @Override
-  public boolean isRemoteManaged() {
-    return isRemoteManaged;
-  }
-
-  @Override
-  public String getType() {
+  public SiteType getType() {
     return type;
   }
 
   @Override
-  public void setType(String type) {
+  public void setType(SiteType type) {
     this.type = type;
   }
 }

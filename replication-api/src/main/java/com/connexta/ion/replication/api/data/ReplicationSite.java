@@ -13,7 +13,7 @@
  */
 package com.connexta.ion.replication.api.data;
 
-import com.connexta.ion.replication.api.NodeAdapterType;
+import java.net.URL;
 
 /** A ReplicationSite holds information about a system to be replicated to/from */
 public interface ReplicationSite extends Persistable {
@@ -37,47 +37,26 @@ public interface ReplicationSite extends Persistable {
    *
    * @return site URL
    */
-  String getUrl();
+  URL getUrl();
 
   /**
    * Set the URL of this site
    *
    * @param url the URL to give this site
    */
-  void setUrl(String url);
+  void setUrl(URL url);
 
   /**
-   * See {@link #isRemoteManaged()}.
+   * Get the type of this site. This type can be used to determine how to interact with the site.
    *
-   * @param remoteManaged whether or not the local process is responsible for running replications
-   *     this site is associated with.
+   * @return the type for this site
    */
-  void setRemoteManaged(boolean remoteManaged);
+  SiteType getType();
 
   /**
-   * When {@code false}, the local process is responsible for running {@link ReplicatorConfig}s
-   * associated with this site.
+   * Sets the type of this site.
    *
-   * <p>When {@code true}, the local process is no longer responsible for performing replication for
-   * any {@link ReplicatorConfig}s associated with this site. This effectively disables running
-   * replication locally.
-   *
-   * @return {@code true} if replication should not run locally, otherwise {@code false}.
+   * @param type the type for the site
    */
-  boolean isRemoteManaged();
-
-  /**
-   * Get the type of this site as defined in {@link NodeAdapterType}. This type can be used to
-   * determine how to interact with the site.
-   *
-   * @return {@link NodeAdapterType}
-   */
-  String getType();
-
-  /**
-   * Sets the {@link NodeAdapterType} of this site.
-   *
-   * @param type the {@link NodeAdapterType}
-   */
-  void setType(String type);
+  void setType(SiteType type);
 }

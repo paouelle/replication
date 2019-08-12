@@ -16,18 +16,17 @@ package com.connexta.ion.replication.api.impl;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import com.connexta.ion.replication.api.NodeAdapter;
-import com.connexta.ion.replication.api.NodeAdapterType;
 import com.connexta.ion.replication.api.ReplicationException;
 import com.connexta.ion.replication.api.ReplicationItem;
 import com.connexta.ion.replication.api.Replicator;
 import com.connexta.ion.replication.api.SyncRequest;
 import com.connexta.ion.replication.api.data.ReplicationSite;
 import com.connexta.ion.replication.api.data.ReplicatorConfig;
+import com.connexta.ion.replication.api.data.SiteType;
 import com.connexta.ion.replication.api.persistence.SiteManager;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Queue;
@@ -233,10 +232,7 @@ public class ReplicatorImpl implements Replicator {
       throw new ReplicationException("Could not determine site type for " + site.getUrl());
     }
     try {
-      store =
-          nodeAdapters
-              .factoryFor(NodeAdapterType.valueOf(site.getType()))
-              .create(new URL(site.getUrl()));
+      store = nodeAdapters.factoryFor(site.getType()).create(site.getUrl());
     } catch (Exception e) {
       throw new ReplicationException("Error connecting to node at " + site.getUrl(), e);
     }
@@ -249,12 +245,12 @@ public class ReplicatorImpl implements Replicator {
   @SuppressWarnings(
       "squid:S2629" /*type.name() is inexpensive so don't need to add the conditional*/)
   private void determineType(ReplicationSite site) {
-    for (NodeAdapterType type : NodeAdapterType.values()) {
+    for (SiteType type : SiteType.values()) {
       LOGGER.debug("Checking if site {} is of type {}", site.getName(), type.name());
-      try (NodeAdapter adapter = nodeAdapters.factoryFor(type).create(new URL(site.getUrl()))) {
+      try (NodeAdapter adapter = nodeAdapters.factoryFor(type).create(site.getUrl())) {
         if (adapter.isAvailable()) {
           LOGGER.debug("Site {} is type {}", site.getName(), type.name());
-          site.setType(type.name());
+          site.setType(type);
           siteManager.save(site);
           return;
         }

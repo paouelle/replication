@@ -5,6 +5,7 @@ import com.connexta.ion.replication.api.data.ReplicationSite;
 import com.connexta.ion.replication.api.impl.data.ReplicationSiteImpl;
 import com.connexta.ion.replication.api.impl.spring.SiteRepository;
 import com.connexta.ion.replication.api.persistence.SiteManager;
+import java.net.URL;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -22,7 +23,7 @@ public class SiteManagerImpl implements SiteManager {
   }
 
   @Override
-  public ReplicationSite createSite(String name, String url) {
+  public ReplicationSite createSite(String name, URL url) {
     ReplicationSite site = new ReplicationSiteImpl();
     site.setName(name);
     site.setUrl(url);

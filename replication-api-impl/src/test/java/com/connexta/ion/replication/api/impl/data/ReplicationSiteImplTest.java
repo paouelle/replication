@@ -16,13 +16,23 @@ package com.connexta.ion.replication.api.impl.data;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ReplicationSiteImplTest {
   private static final String TEST_NAME = "testName";
 
-  private static final String TEST_URL = "https://host:44";
+  private static final URL TEST_URL;
+
+  static {
+    try {
+      TEST_URL = new URL("https://host:44");
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 
   private ReplicationSiteImpl site;
 

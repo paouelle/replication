@@ -14,6 +14,7 @@
 package com.connexta.ion.replication.api.persistence;
 
 import com.connexta.ion.replication.api.data.ReplicationSite;
+import java.net.URL;
 
 /** A SiteManager performs CRUD operations for replication sites. */
 public interface SiteManager extends DataManager<ReplicationSite> {
@@ -25,5 +26,5 @@ public interface SiteManager extends DataManager<ReplicationSite> {
    * @param url the for the {@link ReplicationSite}
    * @return a new {@link ReplicationSite} implementation
    */
-  ReplicationSite createSite(String name, String url);
+  ReplicationSite createSite(String name, URL url);
 }
